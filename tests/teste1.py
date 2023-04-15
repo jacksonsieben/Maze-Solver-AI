@@ -6,10 +6,10 @@ from colorama import Fore, Back, Style
 import os
 
 maze = []
-height = 12
-width = 22
+# height = 7
+# width = 15
 backCounter = 0
-
+flag = 0
 def gotoxy(x,y):
 	print ("%c[%d;%df" % (0x1B, y, x), end='')
 
@@ -284,11 +284,14 @@ def maze_solver():
 		print()
 
 
-def escape(flag):
-	global backCounter
+def escape():
+	global backCounter, flag
 	current_cell = rat_path[len(rat_path) - 1]
+	backCounter += 1
+	if flag == 1:
+		return
 
-	if current_cell == finish and flag == 1:
+	if current_cell == finish:
 		flag = 1
 		return flag
 	else:
@@ -297,22 +300,22 @@ def escape(flag):
 	if maze[current_cell[0] + 1][current_cell[1]] == 'c' and current_cell is not finish and flag != 1:
 		maze[current_cell[0] + 1][current_cell[1]] = 'p'
 		rat_path.append([current_cell[0] + 1, current_cell[1]])
-		flag = escape(flag)
+		escape()
 
 	if maze[current_cell[0]][current_cell[1] + 1] == 'c' and current_cell is not finish and flag != 1:
 		maze[current_cell[0]][current_cell[1] + 1] = 'p'
 		rat_path.append([current_cell[0], current_cell[1] + 1])
-		flag = escape(flag)
+		escape()
 
 	if maze[current_cell[0] - 1][current_cell[1]] == 'c' and current_cell is not finish and flag != 1:
 		maze[current_cell[0] - 1][current_cell[1]] = 'p'
 		rat_path.append([current_cell[0] - 1, current_cell[1]])
-		flag = escape(flag)
+		escape()
 
 	if maze[current_cell[0]][current_cell[1] - 1] == 'c' and current_cell is not finish and flag != 1:
 		maze[current_cell[0]][current_cell[1] - 1] = 'p'
 		rat_path.append([current_cell[0], current_cell[1] - 1])
-		flag = escape(flag)
+		escape()
 
 	# If we get here, this means that we made a wrong decision, so we need to
 	# backtrack
@@ -322,19 +325,20 @@ def escape(flag):
 		cell_to_remove = rat_path[len(rat_path) - 1]
 		rat_path.remove(cell_to_remove)
 		maze[cell_to_remove[0]][cell_to_remove[1]] = 'c'
-		backCounter += 1
+		
 
 if __name__ == '__main__':
-	maze = generateMaze(heightMaze=height, widthMaze=width)
-	flag = 0
+	maze = generateMaze()
+
 	start, finish = get_starting_finishing_points()
 	maze[start[0]][start[1]] = 'p'
 
 	rat_path = [start]
 	os.system("cls")
-	escape(flag)
+	escape()
 	# maze_solver()
 	
 	printMaze(maze)
-	# gotoxy(0,height+2)
-	# print(backCounter)
+	gotoxy(0,height+2)
+	print(backCounter)
+

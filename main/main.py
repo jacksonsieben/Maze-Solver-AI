@@ -1,6 +1,7 @@
-
+from blindSearch import *
 from Maze import *
 
 maze = Maze()
+blind = blindSearch(maze.generateMaze())
 
-maze.printMazeXY(maze.generateMaze())
+blind.solveMaze()
