@@ -1,4 +1,5 @@
 import numpy as np
+from Maze import *
 
 class Node:
     """
@@ -146,7 +147,7 @@ def search(maze, cost, start, end):
                 continue
 
             # Make sure walkable terrain
-            if maze[node_position[0]][node_position[1]] != 0:
+            if maze[node_position[0]][node_position[1]] != 'c':
                 continue
 
             # Create new node
@@ -177,8 +178,15 @@ def search(maze, cost, start, end):
             # Add the child to the yet_to_visit list
             yet_to_visit_list.append(child)
 
+def startFinishPoints(maze):
+    start = [i for i in range(len(maze[0])) if maze[0][i] == 'c']
+    finish = [i for i in range(len(maze[0])) if maze[len(maze)-1][i] == 'c']
+    return [0, start[0]], [len(maze) - 1, finish[0]]
 
 if __name__ == '__main__':
+
+    mazze = Maze()
+    mazeGrid = mazze.generateMaze()
 
     maze = [[0, 1, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0],
@@ -186,11 +194,25 @@ if __name__ == '__main__':
             [0, 1, 0, 0, 1, 0],
             [0, 0, 0, 0, 1, 0]]
     
-    start = [0, 0] # starting position
-    end = [4,5] # ending position
+    map = [ ['w', 'c', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'], 
+            ['w', 'c', 'w', 'c', 'w', 'c', 'c', 'c', 'c', 'w', 'w', 'c', 'w'], 
+            ['w', 'c', 'c', 'w', 'c', 'c', 'c', 'w', 'c', 'c', 'c', 'c', 'w'], 
+            ['w', 'c', 'w', 'c', 'c', 'w', 'w', 'c', 'w', 'c', 'w', 'c', 'w'], 
+            ['w', 'c', 'c', 'c', 'c', 'c', 'w', 'c', 'c', 'w', 'c', 'c', 'w'], 
+            ['w', 'c', 'c', 'c', 'c', 'c', 'w', 'c', 'c', 'c', 'c', 'c', 'w'], 
+            ['w', 'w', 'c', 'c', 'c', 'c', 'c', 'w', 'c', 'c', 'c', 'w', 'w'], 
+            ['w', 'c', 'c', 'c', 'c', 'c', 'w', 'c', 'c', 'w', 'c', 'c', 'w'], 
+            ['w', 'w', 'c', 'c', 'c', 'c', 'c', 'w', 'w', 'c', 'c', 'c', 'w'], 
+            ['w', 'c', 'w', 'c', 'c', 'w', 'w', 'c', 'c', 'c', 'c', 'c', 'w'],
+            ['w', 'c', 'c', 'w', 'w', 'c', 'c', 'c', 'c', 'c', 'w', 'c', 'w'], 
+            ['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'c', 'w']]
+    
+    start, end = startFinishPoints(mazeGrid)
+    # start = [0, 1] # starting position
+    # end = [10,11] # ending position
     cost = 1 # cost per movement
 
-    path = search(maze,cost, start, end)
+    path = search(mazeGrid,cost, start, end)
     print(path)
     print('\n'.join([''.join(["{:" ">3d}".format(item) for item in row]) 
       for row in path]))
