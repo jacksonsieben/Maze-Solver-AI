@@ -4,7 +4,7 @@ from colorama import Fore
 import copy
 import time
 
-class AStar:    
+class HeuristicSearch:    
 
     def __init__(self, Maze):
         self.Maze = copy.deepcopy(Maze)
@@ -48,7 +48,6 @@ class AStar:
 
         while len(toVisit) > 0: 
             self.errorSteps += 1    
-
             currentNode = toVisit[0]
             current_index = 0
             for index, item in enumerate(toVisit):
@@ -105,9 +104,7 @@ class AStar:
 
                 toVisit.append(child)
                 
-
     def printMazeXY(self):
-        # os.system("cls")
         for i in range(0, self.Maze.height):
             for j in range(0, self.Maze.width):
                         self.gotoxy(j+1,i+1)
@@ -128,25 +125,26 @@ class AStar:
             newMaze[x][y]=symbol
         return newMaze
 
-    # def startFinishPoints(self):
-    #     start = [i for i in range(len(self.Maze.maze[0])) if self.Maze.maze[0][i] == 'c']
-    #     finish = [i for i in range(len(self.Maze.maze[0])) if self.Maze.maze[len(self.Maze.maze)-1][i] == 'c']
-    #     return [0, start[0]], [len(self.Maze.maze) - 1, finish[0]]
-    
     def solveMaze(self, showPath=0):
-        # start, end = self.startFinishPoints()
+        
         self.gotoxy(1, 0)
         print(Fore.WHITE + "A* Algorithm", end="")
+
         startTime = time.time()
         self.addPathToMaze(self.search(self.Maze.start, self.Maze.end, showPath), 'f')
         endTime = time.time()
+
         self.printMazeXY()
+
         self.gotoxy(1, self.Maze.height+2)
         print(Fore.WHITE + "Passos: " + str(self.errorSteps), end="")
+
         self.gotoxy(1, self.Maze.height+3)
         print(Fore.WHITE + "Passos errados: " + str(self.errorSteps-self.steps), end="")
+
         self.gotoxy(1, self.Maze.height+4)
         print(Fore.WHITE + "Tempo de resolucao: ", end="")
+        
         self.gotoxy(1, self.Maze.height+5)
         print(Fore.WHITE + str(endTime-startTime) + " segundos", end="")
 

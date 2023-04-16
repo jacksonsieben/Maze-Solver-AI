@@ -2,7 +2,7 @@ import copy
 from colorama import Fore
 import time
 
-class blindSearch:
+class BlindSearch:
     
     def __init__(self, Maze):
         self.Maze = copy.deepcopy(Maze)
@@ -11,13 +11,11 @@ class blindSearch:
         self.flag = 0
         self.path = []
 
-    
     def gotoxy(self,x,y):
         print ("%c[%d;%df" % (0x1B, y+2, x), end='')
 
     def printMaze(self):
         for i in range(0, self.Maze.height):
-            # time.sleep(0.00001)
             for j in range(0, self.Maze.width):
                 self.gotoxy(j+1,i+1)
                 if (self.Maze.maze[i][j] == 'p'):
@@ -27,8 +25,6 @@ class blindSearch:
                 else:
                     print(Fore.RED +  "\u2593", end="")
 
-        
-    
     def search(self, showPath=0):
         currentPoint = self.path[len(self.path) - 1]
         self.steps += 1
@@ -69,7 +65,6 @@ class blindSearch:
             self.errorSteps += 1
     
     def solveMaze(self, showPath=0):
-
         self.Maze.maze[self.Maze.start[0]][self.Maze.start[1]] = 'p'
 
         self.path = [self.Maze.start]
