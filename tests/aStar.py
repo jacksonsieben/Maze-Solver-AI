@@ -1,5 +1,5 @@
 import numpy as np
-from node import *
+from Node import *
 from colorama import Fore
 import os
 

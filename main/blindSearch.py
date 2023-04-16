@@ -1,41 +1,33 @@
-import os
+import copy
 from colorama import Fore
 import time
 
 class blindSearch:
     
-    def __init__(self, maze, height=11, width=27):
-        self.maze = maze
+    def __init__(self, Maze):
+        self.Maze = copy.deepcopy(Maze)
         self.steps = 0
         self.errorSteps = 0
         self.flag = 0
         self.path = []
-        self.height = height
-        self.width = width
+
     
     def gotoxy(self,x,y):
-        print ("%c[%d;%df" % (0x1B, y, x), end='')
+        print ("%c[%d;%df" % (0x1B, y+2, x), end='')
 
-    def printMaze(self, maze):
-        for i in range(0, self.height):
+    def printMaze(self):
+        for i in range(0, self.Maze.height):
             # time.sleep(0.00001)
-            for j in range(0, self.width):
+            for j in range(0, self.Maze.width):
                 self.gotoxy(j+1,i+1)
-                if (maze[i][j] == 'p'):
+                if (self.Maze.maze[i][j] == 'p'):
                     print(Fore.WHITE + "\u2588", end="")
-                elif (maze[i][j] == 'c'):
+                elif (self.Maze.maze[i][j] == 'c'):
                     print(Fore.GREEN + ' ', end="")
                 else:
                     print(Fore.RED +  "\u2593", end="")
-                
-            print()
-        self.gotoxy(0, self.height+2)
-        print("Passos: " + str(self.steps))
 
-    def startFinishPoints(self):
-        start = [i for i in range(len(self.maze[0])) if self.maze[0][i] == 'c']
-        finish = [i for i in range(len(self.maze[0])) if self.maze[len(self.maze)-1][i] == 'c']
-        return [0, start[0]], [len(self.maze) - 1, finish[0]]
+        
     
     def search(self, showPath=0):
         currentPoint = self.path[len(self.path) - 1]
@@ -43,52 +35,59 @@ class blindSearch:
         if self.flag == 1:
             return
 
-        if currentPoint == self.finish:
+        if currentPoint == self.Maze.end:
             self.flag = 1
             return self.flag
         elif showPath == 1:
-            self.printMaze(self.maze)
+            self.printMaze()
 
-        if self.maze[currentPoint[0] + 1][currentPoint[1]] == 'c' and currentPoint is not self.finish and self.flag != 1:
-            self.maze[currentPoint[0] + 1][currentPoint[1]] = 'p'
+        if self.Maze.maze[currentPoint[0] + 1][currentPoint[1]] == 'c' and currentPoint is not self.Maze.end and self.flag != 1:
+            self.Maze.maze[currentPoint[0] + 1][currentPoint[1]] = 'p'
             self.path.append([currentPoint[0] + 1, currentPoint[1]])
             self.search(showPath)
 
-        if self.maze[currentPoint[0]][currentPoint[1] + 1] == 'c' and currentPoint is not self.finish and self.flag != 1:
-            self.maze[currentPoint[0]][currentPoint[1] + 1] = 'p'
+        if self.Maze.maze[currentPoint[0]][currentPoint[1] + 1] == 'c' and currentPoint is not self.Maze.end and self.flag != 1:
+            self.Maze.maze[currentPoint[0]][currentPoint[1] + 1] = 'p'
             self.path.append([currentPoint[0], currentPoint[1] + 1])
             self.search(showPath)
 
-        if self.maze[currentPoint[0] - 1][currentPoint[1]] == 'c' and currentPoint is not self.finish and self.flag != 1:
-            self.maze[currentPoint[0] - 1][currentPoint[1]] = 'p'
+        if self.Maze.maze[currentPoint[0] - 1][currentPoint[1]] == 'c' and currentPoint is not self.Maze.end and self.flag != 1:
+            self.Maze.maze[currentPoint[0] - 1][currentPoint[1]] = 'p'
             self.path.append([currentPoint[0] - 1, currentPoint[1]])
             self.search(showPath)
 
-        if self.maze[currentPoint[0]][currentPoint[1] - 1] == 'c' and currentPoint is not self.finish and self.flag != 1:
-            self.maze[currentPoint[0]][currentPoint[1] - 1] = 'p'
+        if self.Maze.maze[currentPoint[0]][currentPoint[1] - 1] == 'c' and currentPoint is not self.Maze.end and self.flag != 1:
+            self.Maze.maze[currentPoint[0]][currentPoint[1] - 1] = 'p'
             self.path.append([currentPoint[0], currentPoint[1] - 1])
             self.search(showPath)
         
         currentPoint = self.path[len(self.path) - 1]
-        if currentPoint != self.finish:
+        if currentPoint != self.Maze.end:
             pointToRemove = self.path[len(self.path) - 1]
             self.path.remove(pointToRemove)
-            self.maze[pointToRemove[0]][pointToRemove[1]] = 'c'
+            self.Maze.maze[pointToRemove[0]][pointToRemove[1]] = 'c'
             self.errorSteps += 1
     
-    def solveMaze(self):
-        self.start, self.finish = self.startFinishPoints()
-        self.maze[self.start[0]][self.start[1]] = 'p'
+    def solveMaze(self, showPath=0):
 
-        self.path = [self.start]
-        os.system("cls")
+        self.Maze.maze[self.Maze.start[0]][self.Maze.start[1]] = 'p'
+
+        self.path = [self.Maze.start]
+        self.gotoxy(1, 0)
+        print(Fore.WHITE + "BlindSearch Algorithm", end="")
         start = time.time()
-        self.search()
+        self.search(showPath)
         end = time.time()
-        self.printMaze(self.maze)
+        self.printMaze()
 
-        self.gotoxy(0, self.height+3)
-        print("Passos errados: " + str(self.errorSteps))
-        print("Tempo de resolucao: " + str(end-start) + " segundos")
+        self.gotoxy(0, self.Maze.height+2)
+        print(Fore.WHITE + "Passos: " + str(self.steps), end="")
+        self.gotoxy(0, self.Maze.height+3)
+        print(Fore.WHITE + "Passos errados: " + str(self.errorSteps), end="")
+        self.gotoxy(0, self.Maze.height+4)
+        print(Fore.WHITE + "Tempo de resolucao: ", end="")
+        self.gotoxy(0, self.Maze.height+5)
+        print(Fore.WHITE + str(end-start) + " segundos", end="")
+        
 
         
