@@ -2,7 +2,7 @@ import copy
 from colorama import Fore
 import time
 
-class BlindSearch:
+class DeepSearch:
     
     def __init__(self, Maze):
         self.Maze = copy.deepcopy(Maze)
@@ -14,14 +14,20 @@ class BlindSearch:
     def gotoxy(self,x,y):
         print ("%c[%d;%df" % (0x1B, y+2, x), end='')
 
-    def printMaze(self):
+    def printMaze(self, finalPath=False):
+        if finalPath:
+            p = Fore.GREEN
+        else: 
+            p = Fore.WHITE
         for i in range(0, self.Maze.height):
             for j in range(0, self.Maze.width):
                 self.gotoxy(j+1,i+1)
                 if (self.Maze.maze[i][j] == 'p'):
-                    print(Fore.WHITE + "\u2588", end="")
+                    print(p + "\u2588", end="")
                 elif (self.Maze.maze[i][j] == 'c'):
                     print(Fore.GREEN + ' ', end="")
+                elif (self.Maze.maze[i][j] == 'e'):
+                    print(Fore.WHITE + "\u2588", end="")
                 else:
                     print(Fore.RED +  "\u2593", end="")
 
@@ -61,7 +67,7 @@ class BlindSearch:
         if currentPoint != self.Maze.end:
             pointToRemove = self.path[len(self.path) - 1]
             self.path.remove(pointToRemove)
-            self.Maze.maze[pointToRemove[0]][pointToRemove[1]] = 'c'
+            self.Maze.maze[pointToRemove[0]][pointToRemove[1]] = 'e'
             self.errorSteps += 1
     
     def solveMaze(self, showPath=0):
@@ -69,11 +75,11 @@ class BlindSearch:
 
         self.path = [self.Maze.start]
         self.gotoxy(1, 0)
-        print(Fore.WHITE + "BlindSearch Algorithm", end="")
+        print(Fore.WHITE + "DeepSearch Algorithm", end="")
         start = time.time()
         self.search(showPath)
         end = time.time()
-        self.printMaze()
+        self.printMaze(True)
 
         self.gotoxy(0, self.Maze.height+2)
         print(Fore.WHITE + "Passos: " + str(self.steps), end="")

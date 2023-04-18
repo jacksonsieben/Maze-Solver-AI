@@ -13,7 +13,7 @@ class HeuristicSearch:
         self.errorSteps = 0
 
     def gotoxy(self,x,y):
-        print ("%c[%d;%df" % (0x1B, y+2, x+30), end='')
+        print ("%c[%d;%df" % (0x1B, y+2, x+self.Maze.width+7), end='')
 
     def getPath(self, currentNode):
         path = []
