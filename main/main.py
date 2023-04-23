@@ -3,7 +3,7 @@ from heuristicSearch import *
 from Maze import *
 import os
 #To change the default size of maze send height=? and width=?
-maze = Maze(height=40, width=60)
+maze = Maze(height=40, width=90)
 os.system('cls')
 
 blind = BlindSearch(maze)

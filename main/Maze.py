@@ -63,7 +63,6 @@ class Maze:
         walls.append([startH, startW + 1])
         walls.append([startH + 1, startW])
 
-        
         self.maze[startH-1][startW] = 'w'
         self.maze[startH][startW - 1] = 'w'
         self.maze[startH][startW + 1] = 'w'
@@ -88,8 +87,6 @@ class Maze:
                             if ([randWall[0]-1, randWall[1]] not in walls):
                                 walls.append([randWall[0]-1, randWall[1]])
 
-
-                        
                         if (randWall[0] != self.height-1):
                             if (self.maze[randWall[0]+1][randWall[1]] != 'c'):
                                 self.maze[randWall[0]+1][randWall[1]] = 'w'
@@ -122,7 +119,6 @@ class Maze:
                             if ([randWall[0]-1, randWall[1]] not in walls):
                                 walls.append([randWall[0]-1, randWall[1]])
 
-                        
                         if (randWall[1] != 0):
                             if (self.maze[randWall[0]][randWall[1]-1] != 'c'):
                                 self.maze[randWall[0]][randWall[1]-1] = 'w'
@@ -201,7 +197,6 @@ class Maze:
                             walls.remove(wall)
 
                     continue
-
             
             for wall in walls:
                 if (wall[0] == randWall[0] and wall[1] == randWall[1]):
@@ -212,7 +207,6 @@ class Maze:
                 if (self.maze[i][j] == 'u'):
                     self.maze[i][j] = 'w'
 
-        
         for i in range(0, self.width):
             if (self.maze[1][i] == 'c'):
                 self.maze[0][i] = 'c'
