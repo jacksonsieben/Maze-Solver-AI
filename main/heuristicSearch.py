@@ -11,6 +11,7 @@ class HeuristicSearch:
         self.cost = 1
         self.steps = 0
         self.errorSteps = 0
+        self.timeSteps = 0
 
     def gotoxy(self,x,y):
         print ("%c[%d;%df" % (0x1B, y+2, x+self.Maze.width+7), end='')
@@ -69,7 +70,7 @@ class HeuristicSearch:
                 return self.getPath(currentNode)
 
             children = []
-
+            stTime = time.time()
             for newPos in move: 
 
                 nodePos = (currentNode.position[0] + newPos[0], currentNode.position[1] + newPos[1])
@@ -103,6 +104,9 @@ class HeuristicSearch:
                     continue
 
                 toVisit.append(child)
+            enTime = time.time()
+            self.timeSteps = self.timeSteps + (enTime - stTime)
+
                 
     def printMazeXY(self):
         for i in range(0, self.Maze.height):
@@ -146,5 +150,8 @@ class HeuristicSearch:
         print(Fore.WHITE + "Tempo de resolucao: ", end="")
         
         self.gotoxy(1, self.Maze.height+5)
-        print(Fore.WHITE + str(endTime-startTime) + " segundos", end="")
+        print(Fore.WHITE + str(self.timeSteps) + " segundos", end="")
+
+        self.gotoxy(1, self.Maze.height+7)
+
 
