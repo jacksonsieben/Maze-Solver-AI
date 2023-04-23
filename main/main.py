@@ -1,4 +1,4 @@
-from deepSearch import *
+from blindSearch import *
 from heuristicSearch import *
 from Maze import *
 import os
@@ -6,14 +6,9 @@ import os
 maze = Maze(height=40, width=60)
 os.system('cls')
 
+blind = BlindSearch(maze)
 heuristic = HeuristicSearch(maze)
-deep = DeepSearch(maze)
-# To se the algorithm in real time send showPath=1
-<<<<<<< Updated upstream
-deep.solveMaze(1)
-heuristic.solveMaze(1)
-=======
-blind.solveMaze(1)
-heuristic.solveMaze()
 
->>>>>>> Stashed changes
+# To se the algorithm in real time send showPath=1
+blind.solveMaze()
+heuristic.solveMaze()

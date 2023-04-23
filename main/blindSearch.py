@@ -2,7 +2,7 @@ import copy
 from colorama import Fore
 import time
 
-class DeepSearch:
+class BlindSearch:
     
     def __init__(self, Maze):
         self.Maze = copy.deepcopy(Maze)

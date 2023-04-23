@@ -56,9 +56,10 @@ class HeuristicSearch:
                     currentNode = item
                     current_index = index
             if(showPath != 0):
-                self.addPathToMaze(self.getPath(currentNode))
-                self.printMazeXY()         
-            
+                self.printMazeXY()  
+
+            self.addPathToMaze(self.getPath(currentNode))
+
             if self.errorSteps > maxIterations:
                 print ("Maximo de iteracoes exedido!")
                 return self.getPath(currentNode,self.Maze.maze)
@@ -106,7 +107,6 @@ class HeuristicSearch:
                 toVisit.append(child)
             enTime = time.time()
             self.timeSteps = self.timeSteps + (enTime - stTime)
-
                 
     def printMazeXY(self):
         for i in range(0, self.Maze.height):
@@ -134,9 +134,7 @@ class HeuristicSearch:
         self.gotoxy(1, 0)
         print(Fore.WHITE + "A* Algorithm", end="")
 
-        startTime = time.time()
         self.addPathToMaze(self.search(self.Maze.start, self.Maze.end, showPath), 'f')
-        endTime = time.time()
 
         self.printMazeXY()
 
